@@ -1,13 +1,12 @@
 package com.notanony.bbduresult;
 
 public class ResultEntry {
-
-    private String session;
-    private String year;
-    private String rollNumber;
-    private String semester;
-    private String examType;
-    private String status;
+    private final String session;
+    private final String year;
+    private final String rollNumber;
+    private final String semester;
+    private final String examType;
+    private final String status;
 
     public ResultEntry(
             String session,

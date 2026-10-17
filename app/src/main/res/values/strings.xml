@@ -1,12 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">BBDU Result</string>
-    <string name="cancel">Cancel</string>
     <string name="logo">Logo</string>
-    <string name="loading">Loading…</string>
-    <string name="input_roll">University Roll Number</string>
-    <string name="check_result">Check your examination result</string>
+    <string name="college_name">Babu Banarasi Das University, Lucknow</string>
+
+    <string name="input_roll">Enter your roll number</string>
+    <string name="roll_no_label">University Roll Number</string>
+    <string name="roll_hint">Enter your roll number to check your result</string>
     <string name="get_result">Get Result</string>
-    <string name="semester">Semester %1$s</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="loading">Loading…</string>
+
     <string name="select_result">Select Result</string>
-    <string name="choose_semester">"Choose a semester to view your result"</string>
+    <string name="choose_semester">Choose a semester to view your result</string>
+    <string name="semester">Semester %1$s</string>
+
+    <string name="student_name">Name: %1$s</string>
+    <string name="father_name">Father Name: %1$s</string>
+    <string name="mother_name">Mother Name: %1$s</string>
+    <string name="roll_no">Roll No: %1$s</string>
+    <string name="enroll_no">Enrollment No: %1$s</string>
+    <string name="branch">Branch: %1$s</string>
+    <string name="exam_type">Exam Type: %1$s</string>
+    <string name="status">Status: %1$s</string>
+
+    <string name="overall_result">Overall Result:</string>
+    <string name="overall_marks" translatable="false">%1$s: %2$s / %3$s</string>
+    <string name="declaration_date">Date of Declaration of Result: %1$s</string>
+
+    <string name="carry_overs">Carry Over Paper(s):</string>
+
+    <string name="overall_theory">Theory Credit: %1$s / %2$s</string>
+    <string name="overall_practical">Practical Credit: %1$s / %2$s</string>
+
+    <string name="theory_credit">Theory Credit: &lt;i&gt;%1$s / %2$s&lt;/i&gt;</string>
+    <string name="practical_credit">Practical Credit: &lt;i&gt;%1$s / %2$s&lt;/i&gt;</string>
+    <string name="semester_total">Total: &lt;i&gt;%1$s / %2$s&lt;/i&gt;</string>
+    <string name="semester_sgpa">SGPA: &lt;i&gt;%1$s&lt;/i&gt;</string>
 </resources>

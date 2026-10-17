@@ -1,5 +1,6 @@
 package com.notanony.bbduresult;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
@@ -31,7 +32,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
     private TextInputEditText rollNumber;
     private MaterialButton getResult;
     private ResultApi api;
@@ -46,42 +46,39 @@ public class MainActivity extends AppCompatActivity {
         api = RetrofitClient.getApi();
 
         getResult.setOnClickListener(v -> {
-            String roll = "";
+            String roll_no = "";
 
             if (rollNumber.getText() != null) {
-                roll = rollNumber.getText()
+                roll_no = rollNumber.getText()
                         .toString()
                         .trim();
             }
 
-            if (roll.isEmpty()) {
+            if (roll_no.isEmpty()) {
                 rollNumber.setError("Enter your roll number");
                 rollNumber.requestFocus();
                 return;
             }
 
-            if (roll.length() != 10) {
+            if (roll_no.length() != 10) {
                 rollNumber.setError("Enter a valid 10-digit roll number");
                 rollNumber.requestFocus();
                 return;
             }
 
-            getResultList(roll);
+            getResultList(roll_no);
         });
     }
 
     private void getResultList(String roll) {
-
         setLoading(true);
 
         api.getResultList(roll).enqueue(new Callback<>() {
-
             @Override
             public void onResponse(
                     @NonNull Call<String> call,
                     @NonNull Response<String> response
             ) {
-
                 setLoading(false);
 
                 if (!response.isSuccessful()) {
@@ -90,15 +87,12 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 String html = response.body();
-
                 if (html == null || html.trim().isEmpty()) {
                     showToast("No result found");
                     return;
                 }
 
-                List<ResultEntry> results =
-                        parseResultList(html);
-
+                List<ResultEntry> results = parseResultList(html);
                 if (results.isEmpty()) {
                     showToast("Result not found!");
                     return;
@@ -112,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     @NonNull Call<String> call,
                     @NonNull Throwable t
             ) {
-
                 setLoading(false);
 
                 Log.e(
@@ -120,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
                         "Request failed",
                         t
                 );
-
                 showToast(
                         "Network error: " + t.getMessage()
                 );
@@ -135,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
         Elements rows = document.select("table.table tbody tr");
 
         for (Element row : rows) {
-
             String session = getInputValue(row, "session");
             String year = getInputValue(row, "year");
             String roll = getInputValue(row, "urollno");
@@ -155,10 +146,8 @@ public class MainActivity extends AppCompatActivity {
                     examType,
                     status
             );
-
             results.add(entry);
         }
-
         return results;
     }
 
@@ -166,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             Element element,
             String name
     ) {
-
         Element input = element.selectFirst(
                 "input[name=" + name + "]"
         );
@@ -174,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
         if (input == null) {
             return "";
         }
-
         return input.attr("value").trim();
     }
 
@@ -215,24 +202,20 @@ public class MainActivity extends AppCompatActivity {
                 new LinkedHashMap<>();
 
         for (ResultEntry result : results) {
+            String key = result.getSemester()
+                    + "_"
+                    + result.getSession();
 
-            String key =
-                    result.getSemester()
-                            + "_"
-                            + result.getSession();
-
-            groupedResults
-                    .computeIfAbsent(
+            groupedResults.
+                    computeIfAbsent(
                             key,
                             k -> new ArrayList<>()
                     )
                     .add(result);
         }
 
-        for (List<ResultEntry> semesterResults :
-                groupedResults.values()) {
-
-            View semesterView =
+        for (List<ResultEntry> semesterResults : groupedResults.values()) {
+            android.view.View semesterView =
                     getLayoutInflater()
                             .inflate(
                                     R.layout.item_semester_result,
@@ -244,20 +227,16 @@ public class MainActivity extends AppCompatActivity {
                     semesterView.findViewById(
                             R.id.semesterText
                     );
-
             MaterialTextView sessionText =
                     semesterView.findViewById(
                             R.id.sessionText
                     );
-
             LinearLayout optionsContainer =
                     semesterView.findViewById(
                             R.id.optionsContainer
                     );
 
-            ResultEntry first =
-                    semesterResults.get(0);
-
+            ResultEntry first = semesterResults.get(0);
             semesterText.setText(
                     getString(
                             R.string.semester,
@@ -273,7 +252,6 @@ public class MainActivity extends AppCompatActivity {
             );
 
             for (ResultEntry result : semesterResults) {
-
                 MaterialButton button = getMaterialButton(result, dialog);
 
                 LinearLayout.LayoutParams params =
@@ -296,9 +274,7 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
 
-            semesterContainer.addView(
-                    semesterView
-            );
+            semesterContainer.addView(semesterView);
         }
 
         dialog.show();
@@ -322,30 +298,34 @@ public class MainActivity extends AppCompatActivity {
                                 .materialButtonOutlinedStyle
                 );
 
-        String buttonText =
-                result.getExamType()
-                        + " • "
-                        + result.getStatus();
+        String buttonText = result.getExamType()
+                + " • "
+                + result.getStatus();
 
         button.setText(buttonText);
-
         button.setTextSize(12);
-
         button.setAllCaps(false);
 
         button.setOnClickListener(v -> {
-
             dialog.dismiss();
-
             getResultDetails(result);
         });
+
         return button;
+    }
+
+    private void openResultScreen(String html) {
+        Intent intent = new Intent(
+                MainActivity.this,
+                ResultActivity.class
+        );
+        intent.putExtra("result_html", html);
+        startActivity(intent);
     }
 
     private void getResultDetails(
             ResultEntry result
     ) {
-
         setLoading(true);
 
         api.getResultDetails(
@@ -357,31 +337,26 @@ public class MainActivity extends AppCompatActivity {
                 result.getStatus()
 
         ).enqueue(new Callback<>() {
-
             @Override
             public void onResponse(
                     @NonNull Call<String> call,
                     @NonNull Response<String> response
             ) {
-
                 setLoading(false);
 
                 if (!response.isSuccessful()) {
-
                     showToast(
                             "Server error: " + response.code()
                     );
-
                     return;
                 }
 
                 String html = response.body();
-
                 if (html == null || html.trim().isEmpty()) {
                     showToast("Result data is empty");
                     return;
                 }
-                showResultReceived();
+                openResultScreen(response.body());
             }
 
             @Override
@@ -389,7 +364,6 @@ public class MainActivity extends AppCompatActivity {
                     @NonNull Call<String> call,
                     @NonNull Throwable t
             ) {
-
                 setLoading(false);
 
                 Log.e(
@@ -397,7 +371,6 @@ public class MainActivity extends AppCompatActivity {
                         "Request failed",
                         t
                 );
-
                 showToast(
                         "Network error: " + t.getMessage()
                 );
@@ -405,36 +378,17 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showResultReceived() {
-
-        new AlertDialog.Builder(this)
-                .setTitle("Result Received")
-                .setMessage(
-                        "The result was successfully fetched."
-                )
-                .setPositiveButton(
-                        "OK",
-                        null
-                )
-                .show();
-    }
-
     private void setLoading(boolean loading) {
-
         if (loading) {
-
             getResult.setEnabled(false);
             getResult.setText(R.string.loading);
-
         } else {
-
             getResult.setEnabled(true);
             getResult.setText(R.string.get_result);
         }
     }
 
     private void showToast(String message) {
-
         Toast.makeText(
                 MainActivity.this,
                 message,

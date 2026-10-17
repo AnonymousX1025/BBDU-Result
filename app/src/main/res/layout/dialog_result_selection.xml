@@ -7,25 +7,23 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <!-- Title -->
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Result"
+        android:layout_marginTop="25dp"
+        android:text="@string/select_result"
         android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="?attr/colorOnSurface" />
 
-    <!-- Subtitle -->
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Choose a semester to view your result"
+        android:text="@string/choose_semester"
         android:textSize="14sp"
         android:textColor="?attr/colorOnSurfaceVariant" />
 
-    <!-- Scrollable semester list -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -42,7 +40,6 @@
 
     </ScrollView>
 
-    <!-- Cancel -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/cancelButton"
         style="@style/Widget.Material3.Button.TextButton"
@@ -50,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_marginTop="8dp"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textAllCaps="false" />
 
 </LinearLayout>

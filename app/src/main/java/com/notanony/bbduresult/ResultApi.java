@@ -6,7 +6,6 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 
 public interface ResultApi {
-
     @FormUrlEncoded
     @POST("bbdu-result/result-student.php")
     Call<String> getResultList(
